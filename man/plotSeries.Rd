@@ -92,11 +92,11 @@ object <- SilvermanAGutData
 # Plots 2 most abundant taxa, which are colored by their family
 plotSeries(object,
            x = "DAY_ORDER",
-           y = getTopTaxa(object, 2),
+           y = getTop(object, 2),
            colour_by = "Family")
 
 # Counts relative abundances
-object <- transformCounts(object, method = "relabundance")
+object <- transformAssay(object, method = "relabundance")
 
 # Selects taxa
 taxa <- c("seq_1", "seq_2", "seq_3", "seq_4", "seq_5")
@@ -111,7 +111,7 @@ plotSeries(object[taxa,],
 # In addition to 'colour_by' and 'linetype_by', 'size_by' can also be used to group taxa.
 plotSeries(object,
            x = "DAY_ORDER", 
-           y = getTopTaxa(object, 5), 
+           y = getTop(object, 5), 
            colour_by = "Family",
            size_by = "Phylum",
            assay.type = "counts")

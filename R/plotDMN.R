@@ -31,7 +31,7 @@
 #' tse <- peerj13075
 #' 
 #' # Cluster the samples
-#' tse <- cluster(tse, DmmParam(k = 1:4), name = "DMM", full = TRUE)
+#' tse <- addCluster(tse, DmmParam(k = 1:4), name = "DMM", full = TRUE)
 #' 
 #' # Plot the fit
 #' plotDMNFit(tse, name = "DMM", type = "laplace")
@@ -46,7 +46,7 @@ setGeneric("plotDMNFit", signature = "x",
 
 #' @rdname plotDMN
 #' @importFrom DirichletMultinomial mixture
-#' @importFrom ggplot2 ggplot aes_string geom_point geom_line theme_bw labs
+#' @importFrom ggplot2 ggplot aes geom_point geom_line theme_bw labs
 #' @export
 setMethod("plotDMNFit", signature = c(x = "SummarizedExperiment"),
     function(x, name = "DMN", type = c("laplace","AIC","BIC")){
@@ -54,15 +54,18 @@ setMethod("plotDMNFit", signature = c(x = "SummarizedExperiment"),
         if (!is.null(metadata(x)[[name]]$dmm)) {
             dmn <- metadata(x)[[name]]$dmm
         } else {
-            .Deprecated(old="getDMN", new="cluster", 
-                    "Now runDMN and calculateDMN are deprecated. Use cluster with DMMParam parameter and full parameter set as true instead.")
+            .Deprecated(old="getDMN", new="addCluster", 
+                paste0(
+                    "Now runDMN and calculateDMN are deprecated. Use ",
+                    "addCluster with DMMParam parameter and full ",
+                    "parameter set as true instead."))
             dmn <- metadata(x)[[name]]
         }
         fit_FUN <- mia:::.get_dmn_fit_FUN(type)
         #
         k <- vapply(dmn, function(d){ncol(mixture(d))}, numeric(1))
         fit <- vapply(dmn, fit_FUN, numeric(1))
-        ggplot(data.frame(k = k, fit = fit), aes_string(x = k, y = fit)) +
+        ggplot(data.frame(k = k, fit = fit), aes(x = k, y = fit)) +
           geom_point() +
           geom_line() +
           theme_bw() +

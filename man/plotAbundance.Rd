@@ -96,8 +96,8 @@ features present.
 data(GlobalPatterns, package="mia")
 se <- GlobalPatterns
 
-## Plotting abundance using the first taxonomic rank as default
-plotAbundance(se, assay.type="counts")
+## Plotting counts using the first taxonomic rank as default
+plotAbundance(se, assay.type="counts", use_relative=FALSE) + labs(y="Counts")
 
 ## Using "Phylum" as rank
 plotAbundance(se, assay.type="counts", rank = "Phylum", add_legend = FALSE)
@@ -134,9 +134,9 @@ wrap_plots(plot, ncol = 1, heights = c(0.8,0.2))
 ## Compositional barplot with top 5 taxa and samples sorted by "Bacteroidetes"
 
 # Getting top taxa on a Phylum level
-se <- transformCounts(se, method="relabundance")
+se <- transformAssay(se, method="relabundance")
 se_phylum <- agglomerateByRank(se, rank ="Phylum", onRankOnly=TRUE)
-top_taxa <- getTopTaxa(se_phylum,top = 5, assay.type = "relabundance")
+top_taxa <- getTop(se_phylum,top = 5, assay.type = "relabundance")
 
 # Renaming the "Phylum" rank to keep only top taxa and the rest to "Other"
 phylum_renamed <- lapply(rowData(se)$Phylum,

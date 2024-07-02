@@ -3,3 +3,11 @@ inst/doc
 docs
 .Rhistory
 *.RData
+.DS_Store
+/doc/
+/Meta/
+renv/
+renv.lock
+.Rprofile
+.idea
+
